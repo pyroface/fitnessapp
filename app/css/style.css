@@ -1,0 +1,65 @@
+/* General */
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+p {
+	font-size: 14px;
+	line-height:130%;
+	margin: 0;
+	margin-bottom: 7px;
+}
+h1 { 
+	font-size: 25px;
+	color: lightseagreen;
+	margin: 0px; 
+	margin-bottom: 12px;
+}
+ul{
+	margin-top:10px;
+	padding: 0;
+	list-style-type: none;
+}
+li{
+	font-size: 14px;
+	margin: 0;
+	margin-bottom: 10px;
+	border-radius: 5px;
+  padding: 5px; 
+}
+li:nth-child(odd) {
+  background: lightgray;
+}
+#new-date{
+  width:40px;
+}
+.star{
+	display: flex;
+}
+#app{
+	padding: 10px;
+}
+#workout-list{
+	padding: 10px
+}
+.test{
+  padding-left: 105px;
+}
+.entry-header{
+  display:flex;
+}
+.totals{
+  padding-top:10px;
+}
+.short{
+  width:50px;
+}
+.title{
+	text-align: center;
+}
+.star{
+	margin: 25px auto;
+	border-collapse: collapse;
+	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.5);
+	padding:5%;
+	width:65%;
+}

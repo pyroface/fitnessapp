@@ -1,0 +1,15 @@
+.short{
+  width:50px;
+}
+
+.test{
+  padding-left: 105px;
+}
+
+.entry-header{
+  display:flex;
+}
+
+.totals{
+  padding-top:10px;
+}

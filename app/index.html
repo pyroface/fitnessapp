@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue - Workout - by Leo</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="star">  
+
+  <div id="workout-list">
+    <h1 class="title"> Workout List</h1>   
+    <span>Add workout</span>
+    <form v-on:submit.prevent="addWorkout">
+    <input v-model="newWorkout" id="new-workout" placeholder="Sit-ups">
+    <input v-model="newDate" id="new-date" placeholder="Day 1">
+    <button>Add</button>
+  </form>
+  <hr>
+
+  <ul>
+    <li
+      is="workout-item"
+      v-for="(workout, index) in workouts"
+      v-bind:style="{color: workout.doneColor}"
+      v-bind:key="workout.id"
+      v-bind:workouts="workout.title + ' ' + workout.date"
+      v-bind:done="workout.done"
+      v-on:remove="workouts.splice(index, 1)"
+      v-on:done="workout.done = 1; workout.doneColor = 'green'"
+    ></li>
+  </ul>
+  </div>
+  <!-- WORKOUT LIST END -->
+
+  <div id="app">
+    <h1 class="title">Calorie Counter</h1>
+    Add new item
+    <div class="new">
+      <input type="text" v-model="newDescription" v-on:keyup.enter="addEntry" class="long" placeholder="Description">
+      <input type="number" v-model="newCalories" v-on:keyup.enter="addEntry" class="short" placeholder="Calories">
+      <button class="material-button" v-on:click="addEntry()">
+        ADD
+      </button>
+    </div>
+    <hr>
+    
+    <div class="entry-header">
+      <div class="long">Description</div>
+      <div class="test">Calories</div>
+    </div>
+
+    <div class="entry" v-for="entry in entries" transition="fade">
+      <input type="text" name="description-{{ entry.id }}" v-model="entry.description" class="long" v-on:keyup.enter="saveEntry">
+      <input type="number" name="calories-{{ entry.id }}" v-model="entry.calories" class="short" v-on:keyup.enter="saveEntry">
+      <button class="material-delete" v-on:click="removeEntry($index)">
+        X
+      </button>
+    </div>
+
+    <div class="totals">
+      <div class="">Total cal: {{ totalCalories }}</div>
+    </div>
+  </div>
+  <!-- APP END -->
+
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+
+    Vue.component('workout-item', {
+      template: `
+        <li>
+          {{ workouts }}
+          <button v-on:click="$emit('done')">Done</button>
+          <button v-on:click="$emit('remove')">X</button>
+        </li>`,
+      props: ['workouts', 'done']
+    })
+
+    new Vue({
+      el: '#workout-list',
+      data: {
+        newWorkout: '',
+        newDate: '',
+        workouts: [
+          { id: 0, title: 'Squats', date: 'Day 1', done: 0 },
+          { id: 1, title: 'Push ups', date: 'Day 2', done: 0 },
+          { id: 2, title: 'Sit ups', date: 'Day 3', done: 0 }
+        ],
+        nextId: 1
+      },
+      methods: {
+        addWorkout: function () {
+          this.workouts.push({
+            id: this.nextId++,
+            title: this.newWorkout,
+            date: this.newDate,
+            done: 0
+          }) 
+          this.newWorkout = '',
+          this.newDate = ''
+        }
+      }
+    })
+  </script>
+
+<script>
+    var myapp = new Vue({
+      el: '#app',
+      data: {
+        newDescription: '',
+        newCalories: '',
+        totalCalories: '',
+        entries: [
+          { id: 1, description:'Pepsi 33cl', calories: 223 },
+          { id: 2, description:'Apple', calories: 50 },
+          { id: 3, description:'Sandwhich', calories: 175 }
+        ]
+      },
+      methods: {
+        addEntry: function () {
+          var description = this.newDescription
+          var calories = parseInt(this.newCalories.trim())
+
+          if (description && calories) {
+            this.entries.push({ description: description, calories: calories })
+            this.newDescription = ''
+            this.newCalories = ''
+            calculateTotals(this)
+          } else {
+            alert("You need a description and calories!")
+          }
+        },
+        removeEntry: function (index) {
+          this.entries.splice(index, 1)
+          calculateTotals(this)
+        },
+        saveEntry: function() {
+          calculateTotals(this)
+        }
+      }
+    })
+
+    function calculateTotals(app) {
+      app.totalCalories = parseTotals(app.entries, 'calories')
+    }
+
+    calculateTotals(myapp)
+
+    function parseTotals(array, element) {
+      var sum = 0
+      array.forEach(function(entry) {
+        sum = sum + parseInt(entry[element])
+      }, sum, element)
+      return sum
+    }
+  </script>
+</body>
+</html>
